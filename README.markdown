@@ -168,7 +168,7 @@ Optionally set a *placeholder* attribute on the `input` that gets created for ta
 Defaults to *null*
 
 ### newTagKeys (Array of String)
-Optionally define which keys trigger the creation of a new tag. Accepts the following values: 'COMMA', 'TAB', 'ENTER'. To toggle space as new tag delimiter, toggle *allowSpaces*.
+Optionally define which keys trigger the creation of a new tag. Accepts the following values: 'COMMA', 'TAB' and 'ENTER'. To toggle space as new tag delimiter, toggle *allowSpaces*.
 
 Defaults to *['COMMA', 'TAB', 'ENTER']*
 
