@@ -51,6 +51,9 @@
             // When enabled, quotes are unneccesary for inputting multi-word tags.
             allowSpaces: false,
 
+            // New tag keys
+            newTagKeys: ['COMMA', 'TAB', 'ENTER'],
+
             // The below options are for using a single field instead of several
             // for our form values.
             //
@@ -171,6 +174,11 @@
                 this.options.tagSource = $.proxy(this.options.tagSource, this);
             }
 
+            if (this.options.newTagKeys.length == 0) {
+                // Minimal content
+                this.options.newTagKeys = ['ENTER'];
+            }
+
             this.tagList
                 .addClass('tagit')
                 .addClass('ui-widget ui-widget-content ui-corner-all')
@@ -236,17 +244,14 @@
                         that._lastTag().removeClass('remove ui-state-highlight');
                     }
 
-                    // Comma/Space/Enter are all valid delimiters for new tags,
+                    // Comma/Tab/Enter are all valid delimiters for new tags,
                     // except when there is an open quote or if setting allowSpaces = true.
                     // Tab will also create a tag, unless the tag input is empty,
                     // in which case it isn't caught.
                     if (
-                        (event.which === $.ui.keyCode.COMMA && event.shiftKey === false) ||
-                        event.which === $.ui.keyCode.ENTER ||
-                        (
-                            event.which == $.ui.keyCode.TAB &&
-                            that.tagInput.val() !== ''
-                        ) ||
+                        (event.which === $.ui.keyCode.COMMA && event.shiftKey === false && that._newTagKeyEnabled('COMMA')) ||
+                        (event.which === $.ui.keyCode.ENTER && that._newTagKeyEnabled('ENTER')) ||
+                        (event.which == $.ui.keyCode.TAB && that.tagInput.val() !== '' && that._newTagKeyEnabled('TAB')) ||
                         (
                             event.which == $.ui.keyCode.SPACE &&
                             that.options.allowSpaces !== true &&
@@ -584,6 +589,10 @@
             this._tags().each(function(index, tag) {
                 that.removeTag(tag, false);
             });
+        },
+
+        _newTagKeyEnabled: function(key) {
+            return (this.options.newTagKeys.indexOf(key) >= 0);
         }
 
     });
